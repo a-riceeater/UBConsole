@@ -80,6 +80,10 @@
         transform: translate(0%, -50%);
         cursor: pointer;
     }
+    .ubc-domtree-editing {
+        outline: 0;
+        border: 1px solid white;
+    }
     `
 
     const styleSheet = document.createElement('style');
@@ -145,9 +149,18 @@
                 if (e.detail == 2) {
                     console.log("Double clicked dom element", dom)
                     e.preventDefault();
-                    dom.contentEditable ? dom.contentEditable = false : dom.contentEditable = true;
+                    console.log(dom.contentEditable)
+                    dom.contentEditable == "true" ? dom.contentEditable = false : dom.contentEditable = true;
                     dom.classList.toggle("ubc-domtree-editing");
                     dom.focus();
+                }
+            })
+
+            dom.addEventListener("keydown", (e) => {
+                if (e.key == "Enter") {
+                    e.preventDefault();
+                    dom.contentEditable = "False"
+                    dom.classList.toggle("ubc-domtree-editing");
                 }
             })
         })
@@ -162,7 +175,15 @@
                     dom.focus();
                 }
             })
+            dom.addEventListener("keydown", (e) => {
+                if (e.key == "Enter") {
+                    e.preventDefault();
+                    dom.contentEditable = "False"
+                    dom.classList.toggle("ubc-domtree-editing");
+                }
+            })
         })
+        
     }
 
     function createNodeElement(node, depth) {
