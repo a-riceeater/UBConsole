@@ -170,7 +170,30 @@
 </svg>`
     navbar.appendChild(settingsGear);
 
-    console.log = function (message) {
+    console.log = function (/**/) {
+        const error = new Error();
+        const stackTrace = error.stack.split('\n');
+        const callSite = stackTrace[2].trim();
+        const callLocation = callSite.slice(callSite.lastIndexOf("/") + 1);
+    
+        var ms = arguments;
+        var isjso;
+        var message = '';
+        for (var i = 0; i < ms.length; i++) {
+            const msg = ms[i];
+            isjso = isJSON(msg);
+            message += " " + isjso ? JSON.stringify(msg) : msg;
+        };
+    
+        const m = document.createElement("div");
+        m.classList.add("csub-ct-msg");
+        m.innerHTML = `
+        ${isjso ? message : message.substring(1, message.length - 1)}    
+        <span class="csub-ct-from">${callLocation}</span>`
+        consoleTab.appendChild(m);
+    }
+
+    console.warn = function (message) {
         const error = new Error();
         const stackTrace = error.stack.split('\n');
         const callSite = stackTrace[2].trim();
@@ -182,6 +205,10 @@
         ${message}    
         <span class="csub-ct-from">${callLocation}</span>`
         consoleTab.appendChild(m);
+    }
+
+    function isJSON(str) {
+        return str.toString() == "[object Object]";
     }
 
     // Display Handler
