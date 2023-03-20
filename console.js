@@ -214,7 +214,7 @@
                 }
             })
         })
-        
+
     }
 
     function createNodeElement(node, depth) {
@@ -276,4 +276,13 @@
         return element;
     }
     visualizeDOM();
+
+    // Network Logging
+
+    const originalFetch = fetch;
+
+    fetch = (...args) => {
+        console.log('Fetch request initiated with args:', ...args); // Change to logging to network tab when added
+        return originalFetch(...args);
+    };
 })();
