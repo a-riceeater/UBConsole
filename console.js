@@ -34,6 +34,7 @@
         width: 100%;
         font-size: 14px;
         overflow-y: scroll;
+        padding-left: 15px;
     }
 
     .node - div {
@@ -99,22 +100,22 @@
     })
 
     function visualizeDOM() {
-        const h = createNodeElement(document.head);
-        const b = createNodeElement(document.body);
+        const h = createNodeElement(document.querySelector("html"), 0);
         const dt = document.createElement("div");
         dt.innerText = `<!DOCTYPE html>`
         dt.classList.add("dt-identify")
 
         domTree.appendChild(dt);
         domTree.appendChild(h);
-        domTree.appendChild(b);
       }
 
       function createNodeElement(node, depth) {
-        const element = document.createElement('div');
+        const element = document.createElement("div");
+      
+        element.style.paddingLeft = `${depth * 10}px`;
+      
         var tagText = `<span class="tag">&lt;${node.nodeName.toLowerCase()}</span>`;
       
-        // Add attributes to the element
         const attrs = node.attributes;
         for (let i = 0; i < attrs.length; i++) {
           const attr = attrs[i];
@@ -122,13 +123,15 @@
         }
       
         if (node.childNodes.length === 0) {
-          // No child nodes, create a single text node with opening and closing tags
           tagText += '<span class="tag">/&gt;</span>';
           element.innerHTML = tagText;
         } else {
           tagText += '<span class="tag">&gt;</span>';
-          const tagElement = document.createElement('span');
+          const tagElement = document.createElement("span");
           tagElement.innerHTML = tagText;
+          const abc = document.createElement("span");
+          abc.classList.add("myClass");
+          abc.appendChild(tagElement)
           element.appendChild(tagElement);
       
           if (node.childNodes.length > 0) {
@@ -138,8 +141,8 @@
                 const childElement = createNodeElement(childNode, depth + 1);
                 element.appendChild(childElement);
               } else if (childNode.nodeType === Node.TEXT_NODE) {
-                const textElement = document.createElement('span');
-                textElement.style.color = 'gray';
+                const textElement = document.createElement("span");
+                textElement.style.color = "gray";
                 textElement.textContent = childNode.textContent;
                 element.appendChild(textElement);
               }
@@ -147,31 +150,22 @@
           }
       
           const closingTag = `<span class="tag">&lt;/${node.nodeName.toLowerCase()}&gt;</span>`;
-          const closingTagElement = document.createElement('span');
+          const closingTagElement = document.createElement("span");
           closingTagElement.innerHTML = closingTag;
       
-          // Check if the last child node is a text node containing only whitespace
           const lastChild = element.lastChild;
           if (lastChild && lastChild.nodeType === Node.TEXT_NODE && /^\s*$/.test(lastChild.textContent)) {
-            // Remove the whitespace text node
             element.removeChild(lastChild);
           }
       
-          // Append the closing tag element
           element.appendChild(closingTagElement);
         }
       
-        // Add line breaks before and after this element, except for the root element
         if (depth > 0) {
-          element.prepend(document.createElement('br'));
-          element.appendChild(document.createElement('br'));
+          element.appendChild(document.createElement("br"));
         }
       
         return element;
       }
-      
-      // Call the visualizeDOM function to create the visual representation
       visualizeDOM();
-      
-
 })();
