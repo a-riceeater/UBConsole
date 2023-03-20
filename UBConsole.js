@@ -137,8 +137,8 @@
     <div class="csub-fl-t5">
         <button class="csub-fl-navbar-btnop csub-fl-navbar-btnop-selected" id="csub-fl-elementsbtn">Elements</button>
         <button class="csub-fl-navbar-btnop" id="csub-fl-consolebtn">Console</button>
-        <button class="csub-fl-navbar-btnop" id="csub-fl-elementsbtn">Sources</button>
-        <button class="csub-fl-navbar-btnop" id="csub-fl-elementsbtn">Network</button>
+        <button class="csub-fl-navbar-btnop" id="csub-fl-sourcesbtn">Sources</button>
+        <button class="csub-fl-navbar-btnop" id="csub-fl-networkbtn">Network</button>
     </div>
     `
     consoleEle.appendChild(navbar)
@@ -354,6 +354,8 @@
     // Pannel Handler
     function openPannel(name) {
         document.querySelectorAll(".csub-fl-child").forEach(ele => ele.classList.add("csub-fl-hidden"));
+        document.querySelectorAll(".csub-fl-navbar-btnop-selected").forEach(ele => ele.classList.add("csub-fl-navbar-btnop-selected"));
+
         switch (name) {
             case "elements":
                 domTree.classList.remove("csub-fl-hidden");
