@@ -27,7 +27,7 @@
         background-color: #333436;
     }
     
-    .csub-fl-domtree {
+    .csub-fl-child {
         position: absolute;
         top: 15%;
         left: 0%;
@@ -107,6 +107,9 @@
     .csub-fl-navbar-btnop-selected {
         background-color: black;
     }
+    .csub-fl-hidden {
+        display: none;
+    }
     `
 
     const styleSheet = document.createElement('style');
@@ -132,7 +135,21 @@
 
     const domTree = document.createElement("div");
     domTree.classList.add("csub-fl-domtree");
+    domTree.classList.add("csub-fl-child");
+    domTree.classList.add("csub-fl-hidden"); // remove this later
     consoleEle.appendChild(domTree)
+
+    const consoleTab = document.createElement("div");
+    consoleTab.classList.add("csub-fl-cto");
+    consoleTab.classList.add("csub-fl-child");
+    // consoleTab.classList.add("csub-fl-hidden");
+    consoleEle.appendChild(consoleTab);
+
+    consoleTab.innerHTML = `
+    <div class="csub-ct-msg">
+
+    </div>
+    `
 
     const settingsGear = document.createElement("div");
     settingsGear.classList.add("csub-fl-sg")
@@ -148,9 +165,12 @@
 </svg>`
     navbar.appendChild(settingsGear);
 
-    /*console.log = function (message) {
-        document.write(message);
-    }*/
+    console.log = function (message) {
+        const error = new Error();
+        const stackTrace = error.stack.split('\n');
+        const callSite = stackTrace[2].trim();
+        const callLocation = callSite.slice(callSite.lastIndexOf("/") + 1);
+    }
 
     // Display Handler
     document.addEventListener("keyup", (e) => {
