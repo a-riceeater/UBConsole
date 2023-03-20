@@ -13,7 +13,7 @@
         z-index: 999999999999999999;
         left: 0%;
         bottom: 0%;
-        height: 25%;
+        height: calc(25% + 50px);
         width: 100%;
         background-color: #202124;
         font-family: monospace;
@@ -23,13 +23,14 @@
         top: 0%;
         left: 0%;
         width: 100%;
-        height: 15%;
+        height: 50px;
         background-color: #333436;
+        overflow-y: scroll;
     }
     
     .csub-fl-child {
         position: absolute;
-        top: 15%;
+        top: 50px;
         left: 0%;
         height: calc(100% - 15%);
         width: 100%;
@@ -138,13 +139,14 @@
         <button class="csub-fl-navbar-btnop csub-fl-navbar-btnop-selected" id="csub-fl-elementsbtn">Elements</button>
         <button class="csub-fl-navbar-btnop" id="csub-fl-consolebtn">Console</button>
         <button class="csub-fl-navbar-btnop" id="csub-fl-elementsbtn">Sources</button>
-        <button class="csub-fl-navbar-btnop" id="csub-fl-elementsbtn">Network</button>
+        <button class="csub-fl-navbar-btnop" id="csub-fl-networkbtn">Network</button>
     </div>
     `
     consoleEle.appendChild(navbar)
 
     document.getElementById("csub-fl-elementsbtn").addEventListener("click", () => openPannel("elements"));
     document.getElementById("csub-fl-consolebtn").addEventListener("click", () => openPannel("console"));
+    document.getElementById("csub-fl-networkbtn").addEventListener("click", () => openPannel("network"));    
 
     const domTree = document.createElement("div");
     domTree.classList.add("csub-fl-domtree");
@@ -156,6 +158,12 @@
     consoleTab.classList.add("csub-fl-child");
     consoleTab.classList.add("csub-fl-hidden");
     consoleEle.appendChild(consoleTab);
+
+    const networkTab = document.createElement("div");
+    networkTab.classList.add("csub-fl-nwt")
+    networkTab.classList.add("csub-fl-child")
+    networkTab.classList.add("csub-fl-hidden")
+    consoleEle.appendChild(networkTab)
 
     const settingsGear = document.createElement("div");
     settingsGear.classList.add("csub-fl-sg")
@@ -348,18 +356,28 @@
 
     fetch = (...args) => {
         console.log('Fetch request initiated with args:', ...args); // Change to logging to network tab when added
+        const mt = document.createElement("div");
+        mt.innerHTML = args[0] + " " + JSON.stringify(args[1]);
+        networkTab.appendChild(mt);
         return originalFetch(...args);
     };
     
     // Pannel Handler
     function openPannel(name) {
         document.querySelectorAll(".csub-fl-child").forEach(ele => ele.classList.add("csub-fl-hidden"));
+        document.querySelectorAll(".csub-fl-navbar-btnop-selected").forEach(ele => ele.classList.remove("csub-fl-navbar-btnop-selected"))
         switch (name) {
             case "elements":
                 domTree.classList.remove("csub-fl-hidden");
+                document.getElementById("csub-fl-elementsbtn").classList.add("csub-fl-navbar-btnop-selected")
                 break;
             case "console":
                 consoleTab.classList.remove("csub-fl-hidden");
+                document.getElementById("csub-fl-consolebtn").classList.add("csub-fl-navbar-btnop-selected")
+                break;
+            case "network":
+                networkTab.classList.remove("csub-fl-hidden");
+                document.getElementById("csub-fl-networkbtn").classList.add("csub-fl-navbar-btnop-selected")
                 break;
         }
     }
