@@ -6,6 +6,7 @@
 // Function to prevent naming collisions
 (() => {
     const consoleStyles = `
+    @import url("https://fonts.googleapis.com/css?family=Roboto");
     @import url("https://fonts.googleapis.com/css?family=Google%20Sans");
     .csub-fl-container {
         position: fixed;
@@ -81,8 +82,30 @@
         cursor: pointer;
     }
     .ubc-domtree-editing {
-        outline: 0;
-        border: 1px solid white;
+    }
+    .csub-fl-t5 {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        transform: translate(0%, -50%);
+        height: 100%;
+    }
+    .csub-fl-navbar-btnop {
+        margin-left: 15px;
+        background: transparent;
+        color: white;
+        font-family: 'Roboto', serif;
+        border: none;
+        height: 100%;
+        cursor: pointer;
+        color: lightgray
+    }
+    .csub-fl-navbar-btnop:hover {
+        background-color: rgb(128, 128, 128, 0.5);
+        color: white;
+    }
+    .csub-fl-navbar-btnop-selected {
+        background-color: black;
     }
     `
 
@@ -97,6 +120,14 @@
 
     const navbar = document.createElement("div");
     navbar.classList.add("csub-fl-navbar");
+    navbar.innerHTML = `
+    <div class="csub-fl-t5">
+        <button class="csub-fl-navbar-btnop csub-fl-navbar-btnop-selected">Elements</button>
+        <button class="csub-fl-navbar-btnop">Console</button>
+        <button class="csub-fl-navbar-btnop">Sources</button>
+        <button class="csub-fl-navbar-btnop">Network</button>
+    </div>
+    `
     consoleEle.appendChild(navbar)
 
     const domTree = document.createElement("div");
