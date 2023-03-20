@@ -63,6 +63,13 @@
     .dt-identify {
         color: gray;
     }
+
+    .ubc-domtree-ele {
+        cursor: default;
+    }
+    .ubc-domtree-ele:hover {
+        background-color: gray;
+    }
     `
 
     const styleSheet = document.createElement('style');
@@ -123,15 +130,12 @@
         }
       
         if (node.childNodes.length === 0) {
-          tagText += '<span class="tag">/&gt;</span>';
-          element.innerHTML = tagText;
+          tagText += '<span class="ubc-domtree-ele"><span class="tag">/&gt;</span></span>';
+          element.innerHTML = `<span class="ubc-domtree-ele">${tagText}</span>`;
         } else {
           tagText += '<span class="tag">&gt;</span>';
           const tagElement = document.createElement("span");
-          tagElement.innerHTML = tagText;
-          const abc = document.createElement("span");
-          abc.classList.add("myClass");
-          abc.appendChild(tagElement)
+          tagElement.innerHTML = `<span class="ubc-domtree-ele">${tagText}</span>`;
           element.appendChild(tagElement);
       
           if (node.childNodes.length > 0) {
@@ -151,7 +155,7 @@
       
           const closingTag = `<span class="tag">&lt;/${node.nodeName.toLowerCase()}&gt;</span>`;
           const closingTagElement = document.createElement("span");
-          closingTagElement.innerHTML = closingTag;
+          closingTagElement.innerHTML = `<span class="ubc-domtree-ele">${closingTag}</span>`;
       
           const lastChild = element.lastChild;
           if (lastChild && lastChild.nodeType === Node.TEXT_NODE && /^\s*$/.test(lastChild.textContent)) {
