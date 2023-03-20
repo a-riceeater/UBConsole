@@ -1,5 +1,6 @@
 console.log("a", { hi: "A"})
-fetch("https://httpbin.org/get", {
+document.body.onclick = function() {
+    fetch("https://httpbin.org/get", {
     headers: {
         'Content-Type': 'application/json'
     }
@@ -10,3 +11,4 @@ fetch("https://httpbin.org/get", {
 .then(data => {
     console.log(data);
 })
+}

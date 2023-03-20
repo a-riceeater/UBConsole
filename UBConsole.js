@@ -8,6 +8,7 @@
     const consoleStyles = `
     @import url("https://fonts.googleapis.com/css?family=Roboto");
     @import url("https://fonts.googleapis.com/css?family=Google%20Sans");
+    @import url("https://fonts.googleapis.com/css?family=Raleway");
     .csub-fl-container {
         position: fixed;
         z-index: 999999999999999999;
@@ -121,6 +122,24 @@
         margin-right: 10px;
         color: gray;
     }
+    .dftnmsg-url, .dftmsg-status, .dftmsg-type, .dftmsg-time, .dftmsg-headers {
+        color: white;
+        border-right: 1px solid gray;
+        padding-right: 8px;
+    }
+
+    .csub-fl-dft-nwmsg:nth-child(even) {
+        border-bottom: 1px solid rgb(128, 128, 128, 0.7);
+    }
+    .csub-fl-dft-nwmsg:nth-child(odd) {
+        border-bottom: 1px solid rgb(211, 211, 211, 0.7);
+    }
+
+    .csub-fl-dft-nwmsg {
+        height: 30px;
+        line-height: 30px;
+    }
+
     `
 
     const styleSheet = document.createElement('style');
@@ -146,7 +165,7 @@
 
     document.getElementById("csub-fl-elementsbtn").addEventListener("click", () => openPannel("elements"));
     document.getElementById("csub-fl-consolebtn").addEventListener("click", () => openPannel("console"));
-    document.getElementById("csub-fl-networkbtn").addEventListener("click", () => openPannel("network"));    
+    document.getElementById("csub-fl-networkbtn").addEventListener("click", () => openPannel("network"));
 
     const domTree = document.createElement("div");
     domTree.classList.add("csub-fl-domtree");
@@ -184,7 +203,7 @@
         const stackTrace = error.stack.split('\n');
         const callSite = stackTrace[2].trim();
         const callLocation = callSite.slice(callSite.lastIndexOf("/") + 1);
-    
+
         var ms = arguments;
         var isjso;
         var message = '';
@@ -193,7 +212,7 @@
             isjso = isJSON(msg);
             message += " " + isjso ? JSON.stringify(msg) : msg;
         };
-    
+
         const m = document.createElement("div");
         m.classList.add("csub-ct-msg");
         m.innerHTML = `
@@ -203,7 +222,7 @@
         scrollBottom(consoleTab);
     }
 
-    function scrollBottom(t){var e;(e=t).scrollTop=e.scrollHeight}
+    function scrollBottom(t) { var e; (e = t).scrollTop = e.scrollHeight }
 
     console.warn = function (message) {
         const error = new Error();
@@ -223,7 +242,7 @@
         return str.toString() == "[object Object]";
     }
 
-    Object.prototype.scrollBottom=function(){var t;(t=this).scrollTop=t.scrollHeight};
+    Object.prototype.scrollBottom = function () { var t; (t = this).scrollTop = t.scrollHeight };
 
     // Display Handler
     document.addEventListener("keyup", (e) => {
@@ -357,11 +376,35 @@
     fetch = (...args) => {
         console.log('Fetch request initiated with args:', ...args); // Change to logging to network tab when added
         const mt = document.createElement("div");
-        mt.innerHTML = args[0] + " " + JSON.stringify(args[1]);
+        mt.classList.add("csub-fl-dft-nwmsg");
+        mt.innerHTML = `
+        <span class="dftnmsg-url">${args[0]}</span>
+        <span class="dftmsg-status">(pending)</span>
+        <span class="dftmsg-type">fetch</span>
+        <span class="dftmsg-time">(pending)</span>
+        <span class="dftmsg-headers">${JSON.stringify(args[1])}</span>
+        `
+        // mt.innerHTML = args[0] + " " + JSON.stringify(args[1]);
         networkTab.appendChild(mt);
-        return originalFetch(...args);
+        networkTab.scrollBottom(mt);
+        var startDate = new Date();
+        return originalFetch(...args).then((res) => {
+            const endDate = new Date();
+            const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+                
+            mt.innerHTML = `
+              <span class="dftnmsg-url">${args[0]}</span>
+              <span class="dftmsg-status">${res.status}</span>
+              <span class="dftmsg-type">fetch</span>
+              <span class="dftmsg-time">${seconds * 1000}ms</span>
+              <span class="dftmsg-headers">${JSON.stringify(args[1])}</span>
+            `;
+            networkTab.scrollBottom(mt);
+
+            return res;
+          });
     };
-    
+
     // Pannel Handler
     function openPannel(name) {
         document.querySelectorAll(".csub-fl-child").forEach(ele => ele.classList.add("csub-fl-hidden"));
