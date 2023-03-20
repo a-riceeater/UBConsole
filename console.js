@@ -6,6 +6,7 @@
 // Function to prevent naming collisions
 (() => {
     const consoleStyles = `
+    @import url("https://fonts.googleapis.com/css?family=Google%20Sans");
     .csub-fl-container {
         position: fixed;
         z-index: 999999999999999999;
@@ -14,6 +15,7 @@
         height: 25%;
         width: 100%;
         background-color: #202124;
+        font-family: monospace;
     }
     .csub-fl-navbar {
         position: absolute;
@@ -30,6 +32,8 @@
         left: 0%;
         height: calc(100% - 15%);
         width: 100%;
+        font-size: 14px;
+        overflow-y: scroll;
     }
 
     .node - div {
@@ -44,6 +48,19 @@
         border: 1px solid #000;
         width: 50px;
         height: 25px;
+    }
+
+    .tag {
+        color: rgb(10, 114, 148) !important;
+    }
+    .attrName {
+        color: lightblue !important;
+    }
+    .attr-value {
+        color: orange !important;
+    }
+    .dt-identify {
+        color: gray;
     }
     `
 
@@ -82,51 +99,72 @@
     })
 
     function visualizeDOM() {
-        const body = document.body;
-        const rootNode = createNodeElement(body);
-        domTree.appendChild(rootNode);
+        const h = createNodeElement(document.head);
+        const b = createNodeElement(document.body);
+        const dt = document.createElement("div");
+        dt.innerText = `<!DOCTYPE html>`
+        dt.classList.add("dt-identify")
+
+        domTree.appendChild(dt);
+        domTree.appendChild(h);
+        domTree.appendChild(b);
       }
 
-      function createNodeElement(node) {
-        const element = document.createElement('span');
-        const tagElement = document.createElement('span');
-        tagElement.textContent = `<${node.nodeName.toLowerCase()}`;
+      function createNodeElement(node, depth) {
+        const element = document.createElement('div');
+        var tagText = `<span class="tag">&lt;${node.nodeName.toLowerCase()}</span>`;
       
         // Add attributes to the element
         const attrs = node.attributes;
         for (let i = 0; i < attrs.length; i++) {
           const attr = attrs[i];
-          tagElement.textContent += ` ${attr.nodeName}="${attr.nodeValue}"`;
+          tagText += ` <span class="attrName">${attr.nodeName}="</span><span class="attr-value">${attr.nodeValue}"</span>`;
         }
       
-        tagElement.textContent += '>';
+        if (node.childNodes.length === 0) {
+          // No child nodes, create a single text node with opening and closing tags
+          tagText += '<span class="tag">/&gt;</span>';
+          element.innerHTML = tagText;
+        } else {
+          tagText += '<span class="tag">&gt;</span>';
+          const tagElement = document.createElement('span');
+          tagElement.innerHTML = tagText;
+          element.appendChild(tagElement);
       
-        element.appendChild(tagElement);
-      
-        if (node.childNodes.length > 0) {
-          for (let i = 0; i < node.childNodes.length; i++) {
-            const childNode = node.childNodes[i];
-            if (childNode.nodeType === Node.ELEMENT_NODE) {
-              const childElement = createNodeElement(childNode);
-              element.appendChild(document.createElement('br'));
-              element.appendChild(childElement);
-            } else if (childNode.nodeType === Node.TEXT_NODE) {
-              const textElement = document.createElement('span');
-              textElement.textContent = childNode.textContent;
-              element.appendChild(textElement);
+          if (node.childNodes.length > 0) {
+            for (let i = 0; i < node.childNodes.length; i++) {
+              const childNode = node.childNodes[i];
+              if (childNode.nodeType === Node.ELEMENT_NODE) {
+                const childElement = createNodeElement(childNode, depth + 1);
+                element.appendChild(childElement);
+              } else if (childNode.nodeType === Node.TEXT_NODE) {
+                const textElement = document.createElement('span');
+                textElement.style.color = 'gray';
+                textElement.textContent = childNode.textContent;
+                element.appendChild(textElement);
+              }
             }
           }
+      
+          const closingTag = `<span class="tag">&lt;/${node.nodeName.toLowerCase()}&gt;</span>`;
+          const closingTagElement = document.createElement('span');
+          closingTagElement.innerHTML = closingTag;
+      
+          // Check if the last child node is a text node containing only whitespace
+          const lastChild = element.lastChild;
+          if (lastChild && lastChild.nodeType === Node.TEXT_NODE && /^\s*$/.test(lastChild.textContent)) {
+            // Remove the whitespace text node
+            element.removeChild(lastChild);
+          }
+      
+          // Append the closing tag element
+          element.appendChild(closingTagElement);
         }
       
-        const closingTag = document.createElement('span');
-        closingTag.textContent = `</${node.nodeName.toLowerCase()}>`;
-      
-        if (node.nextSibling && node.nextSibling.nodeType === Node.ELEMENT_NODE) {
-          element.appendChild(closingTag);
+        // Add line breaks before and after this element, except for the root element
+        if (depth > 0) {
+          element.prepend(document.createElement('br'));
           element.appendChild(document.createElement('br'));
-        } else {
-          element.appendChild(document.createElement('br'));
-          element.appendChild(closingTag);
         }
       
         return element;
