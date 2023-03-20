@@ -110,6 +110,17 @@
     .csub-fl-hidden {
         display: none;
     }
+    .csub-ct-msg {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        color: lightgray;
+    }
+    .csub-ct-from {
+        margin-right: 10px;
+        border-bottom: 1px solid gray;
+        color: gray;
+    }
     `
 
     const styleSheet = document.createElement('style');
@@ -145,12 +156,6 @@
     // consoleTab.classList.add("csub-fl-hidden");
     consoleEle.appendChild(consoleTab);
 
-    consoleTab.innerHTML = `
-    <div class="csub-ct-msg">
-
-    </div>
-    `
-
     const settingsGear = document.createElement("div");
     settingsGear.classList.add("csub-fl-sg")
     settingsGear.innerHTML = `
@@ -170,6 +175,13 @@
         const stackTrace = error.stack.split('\n');
         const callSite = stackTrace[2].trim();
         const callLocation = callSite.slice(callSite.lastIndexOf("/") + 1);
+
+        const m = document.createElement("div");
+        m.classList.add("csub-ct-msg");
+        m.innerHTML = `
+        ${message}    
+        <span class="csub-ct-from">${callLocation}</span>`
+        consoleTab.appendChild(m);
     }
 
     // Display Handler
