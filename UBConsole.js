@@ -200,15 +200,24 @@
             if (value.replaceAll(/ /g, "") == "") return;
 
             try {
-                eval(value);
+                const func = eval(value);
+                const m = document.createElement("div");
+                m.classList.add("csub-ct-msg");
+                m.innerHTML = `
+                ${isJSON(func) ? JSON.stringify(func) : func}
+                <span class="csub-ct-from">VM</span>`
+                consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
+                scrollBottom(consoleTab);
             } catch (err) {
                 const m = document.createElement("div");
                 m.classList.add("csub-ct-msg");
                 m.innerHTML = `
-        ${isjso ? message : message.substring(1, message.length - 1)}    
-        <a class="csub-ct-from" href="${window.location.href.replace(window.location.href.slice(window.location.href.lastIndexOf("/") + 1), "")}/${callLocation.replaceAll(":", "").replace(/[0-9]/g, '')}" target="_blank">${callLocation}</a>`
+                ${err}
+                <span class="csub-ct-from">VM</span>`
                 consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
                 scrollBottom(consoleTab);
+            } finally {
+                document.getElementById("csub-fl-inputco").value = '';
             }
         }
     })
