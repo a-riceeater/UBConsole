@@ -30,4 +30,5 @@ Network - Logs fetch requests
   - https://ghwosty.github.io/UBConsole/UBConsole.js (regular)
   
   Example:
+  
   javascript: const script = document.createElement("script"); script.src = "https://ghwosty.github.io/UBConsole/UBConsole.min.js";   document.body.appendChild(script); void 0;
