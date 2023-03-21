@@ -402,7 +402,19 @@
             networkTab.scrollBottom(mt);
 
             return res;
-          });
+          })
+          .catch((err) => {
+            const endDate = new Date();
+            const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+            mt.innerHTML = `
+              <span class="dftnmsg-url" style="color: red">${args[0]}</span>
+              <span class="dftmsg-status" style="color: red">unknown</span>
+              <span class="dftmsg-type" style="color: red">fetch</span>
+              <span class="dftmsg-time" style="color: red">${seconds * 1000}ms</span>
+              <span class="dftmsg-headers" style="color: red">${JSON.stringify(args[1])}</span>
+            `;
+            throw err;
+          })
     };
 
     // Pannel Handler
