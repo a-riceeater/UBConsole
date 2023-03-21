@@ -17,3 +17,13 @@ Network - Logs fetch requests
 # Bugs
 - Link in console to source of message may not work
 - Unusual characters appearing in the console message source
+
+
+# Instalation
+
+- Bookmark Injection
+  - Create a bookmark injection
+  - Set the script src to:
+  - https://ghwosty.github.io/UBConsole/UBConsole.min.js (minified)
+  - or
+  - https://ghwosty.github.io/UBConsole/UBConsole.js (regular)
