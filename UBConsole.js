@@ -5,8 +5,7 @@
 
 // Function to prevent naming collisions
 (() => {
-    const vmNm = (Math.random() * (9999 - 1111) + 1111).toFixed()
-
+    const vmNm = window.location.href.toString().length *  (Math.random() * (5 - 1) + 1).toFixed() // or window.location.href.toString().length *  (Math.random() * (9999 - 1111) + 1111).toFixed()
     const consoleStyles = `
     @import url("https://fonts.googleapis.com/css?family=Roboto");
     @import url("https://fonts.googleapis.com/css?family=Google%20Sans");
@@ -454,6 +453,7 @@
                 const endDate = new Date();
                 const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
                 mt.innerHTML = `
+                <span style="color: red">(failed)</span>
               <span class="dftnmsg-url" style="color: red">${args[0]}</span>
               <span class="dftmsg-status" style="color: red">unknown</span>
               <span class="dftmsg-type" style="color: red">fetch</span>
