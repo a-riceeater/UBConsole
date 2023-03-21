@@ -211,6 +211,7 @@
             } catch (err) {
                 const m = document.createElement("div");
                 m.classList.add("csub-ct-msg");
+                m.style.color = "red"
                 m.innerHTML = `
                 ${err}
                 <span class="csub-ct-from">VM</span>`
