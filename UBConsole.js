@@ -140,6 +140,14 @@
         line-height: 30px;
     }
 
+    #csub-fl-inputco {
+        font-family: monospace;
+        color: white;
+        background: transparent;
+        border: none;
+        width: 90%;
+        outline: 0;
+    }
     `
 
     const styleSheet = document.createElement('style');
@@ -176,7 +184,34 @@
     consoleTab.classList.add("csub-fl-cto");
     consoleTab.classList.add("csub-fl-child");
     consoleTab.classList.add("csub-fl-hidden");
+
+    consoleTab.innerHTML = `
+    <div id="csub-fl-inputcodiv">
+    <span style="color: rgb(0, 119, 255);">&gt;</span> <input id="csub-fl-inputco">
+    </div>
+    `
+
     consoleEle.appendChild(consoleTab);
+
+    document.getElementById("csub-fl-inputco").addEventListener("keyup", (e) => {
+        if (e.keyCode == 13 || e.key === "Enter") {
+            const value = document.getElementById("csub-fl-inputco").value;
+
+            if (value.replaceAll(/ /g, "") == "") return;
+
+            try {
+                eval(value);
+            } catch (err) {
+                const m = document.createElement("div");
+                m.classList.add("csub-ct-msg");
+                m.innerHTML = `
+        ${isjso ? message : message.substring(1, message.length - 1)}    
+        <a class="csub-ct-from" href="${window.location.href.replace(window.location.href.slice(window.location.href.lastIndexOf("/") + 1), "")}/${callLocation.replaceAll(":", "").replace(/[0-9]/g, '')}" target="_blank">${callLocation}</a>`
+                consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
+                scrollBottom(consoleTab);
+            }
+        }
+    })
 
     const networkTab = document.createElement("div");
     networkTab.classList.add("csub-fl-nwt")
@@ -218,7 +253,7 @@
         m.innerHTML = `
         ${isjso ? message : message.substring(1, message.length - 1)}    
         <a class="csub-ct-from" href="${window.location.href.replace(window.location.href.slice(window.location.href.lastIndexOf("/") + 1), "")}/${callLocation.replaceAll(":", "").replace(/[0-9]/g, '')}" target="_blank">${callLocation}</a>`
-        consoleTab.appendChild(m);
+        consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
         scrollBottom(consoleTab);
     }
 
@@ -391,7 +426,7 @@
         return originalFetch(...args).then((res) => {
             const endDate = new Date();
             const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-                
+
             mt.innerHTML = `
               <span class="dftnmsg-url">${args[0]}</span>
               <span class="dftmsg-status">${res.status}</span>
@@ -402,19 +437,19 @@
             networkTab.scrollBottom(mt);
 
             return res;
-          })
-          .catch((err) => {
-            const endDate = new Date();
-            const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-            mt.innerHTML = `
+        })
+            .catch((err) => {
+                const endDate = new Date();
+                const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+                mt.innerHTML = `
               <span class="dftnmsg-url" style="color: red">${args[0]}</span>
               <span class="dftmsg-status" style="color: red">unknown</span>
               <span class="dftmsg-type" style="color: red">fetch</span>
               <span class="dftmsg-time" style="color: red">${seconds * 1000}ms</span>
               <span class="dftmsg-headers" style="color: red">${JSON.stringify(args[1])}</span>
             `;
-            throw err;
-          })
+                throw err;
+            })
     };
 
     // Pannel Handler
