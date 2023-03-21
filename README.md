@@ -31,4 +31,4 @@ Network - Logs fetch requests
   
   Example:
   
-  javascript: const script = document.createElement("script"); script.src = "https://ghwosty.github.io/UBConsole/UBConsole.min.js";   document.body.appendChild(script); void 0;
+  ```javascript: const script = document.createElement("script"); script.src = "https://ghwosty.github.io/UBConsole/UBConsole.min.js";   document.body.appendChild(script); void 0;```
