@@ -33,7 +33,7 @@
         position: absolute;
         top: 50px;
         left: 0%;
-        height: calc(100% - 15%);
+        height: calc(100% - 17.5%);
         width: 100%;
         font-size: 14px;
         overflow-y: scroll;
