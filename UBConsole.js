@@ -5,6 +5,8 @@
 
 // Function to prevent naming collisions
 (() => {
+    const vmNm = (Math.random() * (9999 - 1111) + 1111).toFixed()
+
     const consoleStyles = `
     @import url("https://fonts.googleapis.com/css?family=Roboto");
     @import url("https://fonts.googleapis.com/css?family=Google%20Sans");
@@ -205,7 +207,7 @@
                 m.classList.add("csub-ct-msg");
                 m.innerHTML = `
                 ${isJSON(func) ? JSON.stringify(func) : func}
-                <span class="csub-ct-from">VM</span>`
+                <span class="csub-ct-from">VM${vmNm}:1</span>`
                 consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
                 scrollBottom(consoleTab);
             } catch (err) {
@@ -214,7 +216,7 @@
                 m.style.color = "red"
                 m.innerHTML = `
                 ${err}
-                <span class="csub-ct-from">VM</span>`
+                <span class="csub-ct-from">VM${vmNm}:1</span>`
                 consoleTab.insertBefore(m, document.getElementById("csub-fl-inputcodiv"));
                 scrollBottom(consoleTab);
             } finally {
