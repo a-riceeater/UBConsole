@@ -17,6 +17,7 @@ Network - Logs fetch requests
 # Bugs
 - Link in console to source of message may not work
 - Unusual characters appearing in the console message source
+- Styles may seen messed up on different sites
 
 
 # Instalation
