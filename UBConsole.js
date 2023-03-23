@@ -418,6 +418,12 @@
     // Network Logging
 
     const originalFetch = fetch;
+    const proxied = XMLHttpRequest.prototype.open;
+
+    XMLHttpRequest.prototype.open = function() {
+        console.log(arguments)
+        return proxied.apply(this, [].slice.call(arguments))
+    }
 
     fetch = (...args) => {
         console.log('Fetch request initiated with args:', ...args); // Change to logging to network tab when added
