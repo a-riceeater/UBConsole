@@ -2,13 +2,15 @@
 
 An unblocked console that has almost the same functions as your average chrome browser one.
 
+Scroll down for installation.
+
 # Features
 
 Console - Views all console messages (console.log, console.err, etc) messages
 
 Dom Tree (elements) - Views the DOM tree
 
-Network - Logs fetch requests
+Network - Logs fetch requests (xhr in progress)
 
 # In Progresss
 - Sources
