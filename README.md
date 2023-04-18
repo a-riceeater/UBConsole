@@ -27,9 +27,9 @@ Network - Logs fetch requests (xhr in progress)
 - Bookmark Injection
   - Create a bookmark injection
   - Set the script src to:
-  - https://ghwosty.github.io/UBConsole/UBConsole.min.js (minified)
+  - https://a-riceeater.github.io/UBConsole/UBConsole.min.js (minified)
   - or
-  - https://ghwosty.github.io/UBConsole/UBConsole.js (regular)
+  - https://a-riceeater.github.io/UBConsole/UBConsole.js (regular)
   
   Example:
   
