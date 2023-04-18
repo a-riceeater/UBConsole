@@ -1,5 +1,5 @@
 /*
-    Elijah Bantugan 2023
+    Copyright (c) Elijah Bantugan 2023
     MIT License
 */
 
