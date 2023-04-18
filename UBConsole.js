@@ -420,9 +420,8 @@
     const originalFetch = fetch;
     const proxied = XMLHttpRequest.prototype.open;
 
-    XMLHttpRequest.prototype.open = function() {
-        console.log(arguments)
-        return proxied.apply(this, [].slice.call(arguments))
+    XMLHttpRequest.prototype.open = function(...args) {
+        return proxied.apply(this, ...args)
     }
 
     fetch = (...args) => {
