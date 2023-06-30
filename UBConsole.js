@@ -429,7 +429,7 @@
         const mt = document.createElement("div");
         mt.classList.add("csub-fl-dft-nwmsg");
         mt.innerHTML = `
-        <span class="dftnmsg-url">${args[0]}</span>
+        <span class="dftnmsg-url">${JSON.stringify(args[0])}</span>
         <span class="dftmsg-status">(pending)</span>
         <span class="dftmsg-type">fetch</span>
         <span class="dftmsg-time">(pending)</span>
@@ -444,7 +444,7 @@
             const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
 
             mt.innerHTML = `
-              <span class="dftnmsg-url">${args[0]}</span>
+              <span class="dftnmsg-url">${JSON.stringify(args[0])}</span>
               <span class="dftmsg-status">${res.status}</span>
               <span class="dftmsg-type">fetch</span>
               <span class="dftmsg-time">${seconds * 1000}ms</span>
