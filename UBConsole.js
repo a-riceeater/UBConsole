@@ -488,4 +488,7 @@
                 break;
         }
     }
-})();
+})()
+.catch((err) => {
+    alert(err);
+})
